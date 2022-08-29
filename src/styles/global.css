@@ -1,0 +1,9 @@
+li,
+button:hover {
+  cursor: pointer;
+}
+
+ul,
+li {
+  list-style: none;
+}
