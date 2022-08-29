@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import TodoItemList from "./components/TodoItemList";
 import TodoInputField from "./components/TodoInputField";
+import TodoFilter from "./components/TodoFilter";
 
 export interface Todo {
   id: number;
@@ -9,9 +10,16 @@ export interface Todo {
   date: string;
 }
 
+export enum Filter {
+  ALL = "ALL",
+  DONE = "DONE",
+  YET = "YET",
+}
+
 function App() {
-  const [input, setInput] = useState<string>("");
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [input, setInput] = useState<string>("");
+  const [filter, setFilter] = useState<Filter>(Filter.ALL);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setInput(e.target.value);
@@ -19,11 +27,11 @@ function App() {
 
   const handleCheck = useCallback(
     (id) => {
-      const newTodos = todos.map((todo) =>
-        todo.id === id ? { ...todo, done: !todo.done } : todo
+      setTodos(
+        todos.map((todo) =>
+          todo.id === id ? { ...todo, done: !todo.done } : todo
+        )
       );
-
-      setTodos(newTodos);
     },
     [todos]
   );
@@ -35,10 +43,12 @@ function App() {
     [todos]
   );
 
-  const updateTodo = useCallback((id, value) => {
-    // update todo;
-    console.log(id, value);
-  }, []);
+  const updateTodo = (id: number, value: string) => {
+    const updatedTodo = todos.map((todo) =>
+      todo.id === id ? { ...todo, text: value } : todo
+    );
+    setTodos(updatedTodo);
+  };
 
   const handleSubmit = () => {
     if (!input) return;
@@ -65,8 +75,10 @@ function App() {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
       />
+      <TodoFilter setFilter={setFilter} />
       <TodoItemList
         todos={todos}
+        filter={filter}
         handleCheck={handleCheck}
         deleteTodo={deleteTodo}
         updateTodo={updateTodo}

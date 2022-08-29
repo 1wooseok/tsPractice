@@ -1,21 +1,25 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import "../styles/todoStyle.css";
 
 function TodoItem(props: any) {
-  const [editable, setEditable] = useState<boolean>(false);
+  const timer = useRef<number | null>(null);
 
   const { handleCheck, deleteTodo, updateTodo } = props;
   const { id, text, done, date } = props.todo;
 
-  const handleDbClick = (e: React.MouseEvent<HTMLSpanElement>) => {
-    setEditable((prev) => !prev);
-    e.target.focus();
+  const handleChange = (e: React.ChangeEvent<HTMLSpanElement>) => {
+    if (timer.current) {
+      clearTimeout(timer.current);
+    }
+    timer.current = setTimeout(() => {
+      updateTodo(id, e.target.textContent);
+    }, 200);
   };
 
   return (
     <li className={done ? "done" : ""}>
       <input type="checkbox" checked={done} onChange={() => handleCheck(id)} />
-      <span contentEditable={editable} onDoubleClick={handleDbClick}>
+      <span contentEditable onInput={handleChange}>
         {text}
       </span>
       <span>( {date} )</span>
@@ -25,7 +29,3 @@ function TodoItem(props: any) {
 }
 
 export default TodoItem;
-
-// db클릭시 editable true,
-// 입력 완료시 list update
-//

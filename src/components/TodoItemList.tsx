@@ -1,20 +1,35 @@
 import React from "react";
 import { Todo } from "../App";
 import TodoItem from "./TodoItem";
+import { Filter } from "../App";
 
 interface TodoListProps {
   todos: Todo[];
+  filter: Filter;
   handleCheck: (id: number) => void;
   deleteTodo: (id: number) => void;
   updateTodo: (id: number, value: string) => void;
 }
 
 function TodoItemList(props: TodoListProps) {
-  const { todos, handleCheck, deleteTodo, updateTodo } = props;
+  const { todos, filter, handleCheck, deleteTodo, updateTodo } = props;
+
+  const getFilteredTodos = (filter: Filter) => {
+    switch (filter) {
+      case "ALL":
+        return todos;
+      case "DONE":
+        return todos.filter((todo) => todo.done);
+      case "YET":
+        return todos.filter((todo) => !todo.done);
+      default:
+        return todos;
+    }
+  };
 
   return (
     <ul>
-      {todos.map((todo) => (
+      {getFilteredTodos(filter).map((todo) => (
         <TodoItem
           key={todo.id}
           todo={todo}
