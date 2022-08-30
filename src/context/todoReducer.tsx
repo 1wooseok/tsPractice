@@ -1,3 +1,4 @@
+// 로딩처리 하기
 import { Todo, Filter, TodoStateInterface } from "../types/TodoType";
 import { db } from "../FIREBASE";
 import { addDoc, collection } from "firebase/firestore";
@@ -8,39 +9,52 @@ export const initialState: TodoStateInterface = {
 };
 
 type ACTIONS =
-  | { type: "ADD_TODO"; payload: string }
+  | { type: "LOADING" }
+  | { type: "ERROR"; payload: any }
+  | { type: "ADD_TODO"; payload: Todo }
   | { type: "DELETE_TODO"; payload: string }
   | { type: "UPDATE_TODO"; payload: { id: string; text: string } }
   | { type: "TOGGLE_TODO"; payload: string }
   | { type: "SET_FILTER"; payload: Filter };
 
-export async function TodoReducer(
+const loading = () => {
+  return {
+    loading: true,
+    state: null,
+    error: null,
+  };
+};
+
+const success = (data: any) => {
+  return {
+    loading: false,
+    state: data,
+    error: null,
+  };
+};
+
+const error = (err: any) => {
+  return {
+    loading: false,
+    state: null,
+    error: err,
+  };
+};
+
+export function TodoReducer(
   state: typeof initialState,
   action: ACTIONS
-): Promise<TodoStateInterface> {
+): TodoStateInterface {
   switch (action.type) {
-    case "ADD_TODO":
-      let test = false;
-      const docRef = await addDoc(collection(db, "todoItem"), {
-        todoItemContent: {
-          text: action.payload,
-          done: false,
-          date: new Date().toDateString(),
-        },
-        isFinished: false,
-      });
-
-      const todoItem: Todo = {
-        id: docRef.id,
-        text: action.payload,
-        done: false,
-        date: new Date().toDateString(),
+    case "LOADING":
+      return {
+        todos: null,
+        filter: null,
       };
-
-      console.log({ todoItem });
+    case "ADD_TODO":
       return {
         ...state,
-        todos: [...state.todos, todoItem],
+        todos: [...state.todos, action.payload],
       };
     case "DELETE_TODO":
       return {
@@ -73,3 +87,9 @@ export async function TodoReducer(
       return state;
   }
 }
+
+// 로딩 처리
+// 1. 요청을 보낼떄 상태를 null로 변경
+//   1-1. type에 null을 추가해야 함.
+
+// 2. state === null 일떄 UI 추가

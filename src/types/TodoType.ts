@@ -12,6 +12,6 @@ export enum Filter {
 }
 
 export interface TodoStateInterface {
-  todos: Todo[];
-  filter: Filter;
+  todos: Todo[] | null;
+  filter: Filter | null;
 }
