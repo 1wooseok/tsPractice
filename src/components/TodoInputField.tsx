@@ -1,18 +1,26 @@
+import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
+import { useTodoDispatch } from "../context/TodoContext";
 
-interface InputFieldProps {
-  input: string;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleSubmit: () => void;
-}
+function TodoInputField() {
+  const dispatch = useTodoDispatch();
+  const [input, setInput] = useState<string>("");
 
-function TodoInputField(props: InputFieldProps) {
-  const { input, handleChange, handleSubmit } = props;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+  };
+
+  const addTodo = (): void => {
+    if (!input) return;
+
+    dispatch({ type: "ADD_TODO", payload: input });
+    setInput("");
+  };
 
   return (
     <>
       <TextField name="input" value={input} onChange={handleChange} />
-      <Button onClick={handleSubmit}>ADD</Button>
+      <Button onClick={addTodo}>ADD</Button>
     </>
   );
 }

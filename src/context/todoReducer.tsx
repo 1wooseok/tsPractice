@@ -1,20 +1,27 @@
-import { Todo, Filter } from "./TodoContext";
+import { Todo, Filter, TodoStateInterface } from "../types/TodoType";
 
-export interface TodoListInterface {
-  todos: Todo[];
-  filter: Filter;
-}
-
-export const initialState: TodoListInterface = {
+export const initialState: TodoStateInterface = {
   todos: [],
+  filter: Filter.ALL,
 };
 
-type ACTIONTYPE =
+export enum ACTIONTYPE {
+  ADD_TODO = "ADD_TODO",
+  DELETE_TODO = "DELETE_TODO",
+  YET = "YET",
+}
+
+type ACTIONS =
   | { type: "ADD_TODO"; payload: string }
   | { type: "DELETE_TODO"; payload: number }
-  | { type: "UPDATE_TODO"; payload: { id: number; text: string } };
+  | { type: "UPDATE_TODO"; payload: { id: number; text: null | string } }
+  | { type: "TOGGLE_TODO"; payload: number }
+  | { type: "SET_FILTER"; payload: Filter };
 
-export function TodoReducer(state: typeof initialState, action: ACTIONTYPE) {
+export function TodoReducer(
+  state: typeof initialState,
+  action: ACTIONS
+): TodoStateInterface {
   switch (action.type) {
     case "ADD_TODO":
       const todoItem: Todo = {
@@ -40,6 +47,18 @@ export function TodoReducer(state: typeof initialState, action: ACTIONTYPE) {
             ? { ...todo, text: action.payload.text }
             : todo
         ),
+      };
+    case "TOGGLE_TODO":
+      return {
+        ...state,
+        todos: state.todos.map((todo) =>
+          todo.id === action.payload ? { ...todo, done: !todo.done } : todo
+        ),
+      };
+    case "SET_FILTER":
+      return {
+        ...state,
+        filter: action.payload,
       };
     default:
       return state;

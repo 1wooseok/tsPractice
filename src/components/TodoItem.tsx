@@ -1,29 +1,53 @@
 import React, { useRef } from "react";
+import { Todo } from "../types/TodoType";
+import { useTodoDispatch } from "../context/TodoContext";
 import "../styles/todoStyle.css";
 
-function TodoItem(props: any) {
+interface TodoItemProps {
+  todo: Todo;
+}
+
+function TodoItem({ todo }: TodoItemProps) {
   const timer = useRef<number | null>(null);
 
-  const { handleCheck, deleteTodo, updateTodo } = props;
-  const { id, text, done, date } = props.todo;
+  const dispatch = useTodoDispatch();
+
+  const { id, done, text, date } = todo;
+
+  const deleteTodo = () => {
+    dispatch({ type: "DELETE_TODO", payload: id });
+  };
+
+  const updateTodo = (text: string | null) => {
+    dispatch({ type: "UPDATE_TODO", payload: { id, text } });
+  };
+
+  const toggleCheck = () => {
+    dispatch({ type: "TOGGLE_TODO", payload: id });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLSpanElement>) => {
+    if (e.target.textContent === text) {
+      return;
+    }
+
     if (timer.current) {
       clearTimeout(timer.current);
     }
+
     timer.current = setTimeout(() => {
-      updateTodo(id, e.target.textContent);
+      updateTodo(e.target.textContent);
     }, 200);
   };
 
   return (
     <li className={done ? "done" : ""}>
-      <input type="checkbox" checked={done} onChange={() => handleCheck(id)} />
+      <input type="checkbox" checked={done} onChange={toggleCheck} />
       <span contentEditable onInput={handleChange}>
         {text}
       </span>
       <span>( {date} )</span>
-      <button onClick={() => deleteTodo(id)}>DEL</button>
+      <button onClick={deleteTodo}>DEL</button>
     </li>
   );
 }

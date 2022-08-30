@@ -1,19 +1,12 @@
 import React from "react";
-import { Todo, Filter } from "../context/TodoContext";
+import { useTodoContext } from "../context/TodoContext";
+import { Todo } from "../types/TodoType";
 import TodoItem from "./TodoItem";
 
-interface TodoListProps {
-  todos: Todo[];
-  filter: Filter;
-  handleCheck: (id: number) => void;
-  deleteTodo: (id: number) => void;
-  updateTodo: (id: number, value: string) => void;
-}
+function TodoItemList() {
+  const { todos, filter } = useTodoContext();
 
-function TodoItemList(props: TodoListProps) {
-  const { todos, filter, handleCheck, deleteTodo, updateTodo } = props;
-
-  const getFilteredTodos = (filter: Filter) => {
+  const getFilteredTodos = (): Todo[] => {
     switch (filter) {
       case "ALL":
         return todos;
@@ -28,14 +21,8 @@ function TodoItemList(props: TodoListProps) {
 
   return (
     <ul>
-      {getFilteredTodos(filter).map((todo) => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          handleCheck={handleCheck}
-          deleteTodo={deleteTodo}
-          updateTodo={updateTodo}
-        />
+      {getFilteredTodos().map((todo) => (
+        <TodoItem key={todo.id} todo={todo} />
       ))}
     </ul>
   );

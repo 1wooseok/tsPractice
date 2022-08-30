@@ -1,18 +1,19 @@
 import React from "react";
-import { Filter } from "../context/TodoContext";
+import { useTodoDispatch } from "../context/TodoContext";
+import { Filter } from "../types/TodoType";
 
-interface FilterProps {
-  setFilter: (newFilter: Filter) => void;
-}
+function TodoFilter() {
+  const dispatch = useTodoDispatch();
 
-function TodoFilter(props: FilterProps) {
-  const { setFilter } = props;
+  const handleFilter = (filter: Filter) => {
+    dispatch({ type: "SET_FITER", payload: filter });
+  };
 
   return (
     <div>
-      <button onClick={() => setFilter(Filter.ALL)}>{Filter.ALL}</button>
-      <button onClick={() => setFilter(Filter.DONE)}>{Filter.DONE}</button>
-      <button onClick={() => setFilter(Filter.YET)}>{Filter.YET}</button>
+      <button onClick={() => handleFilter(Filter.ALL)}>{Filter.ALL}</button>
+      <button onClick={() => handleFilter(Filter.DONE)}>{Filter.DONE}</button>
+      <button onClick={() => handleFilter(Filter.YET)}>{Filter.YET}</button>
     </div>
   );
 }
