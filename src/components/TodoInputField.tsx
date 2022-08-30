@@ -11,8 +11,9 @@ function TodoInputField() {
   };
 
   const addTodo = (): void => {
-    if (!input) return;
-
+    if (!input) {
+      return;
+    }
     dispatch({ type: "ADD_TODO", payload: input });
     setInput("");
   };

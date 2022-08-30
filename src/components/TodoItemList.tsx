@@ -1,27 +1,13 @@
 import React from "react";
-import { useTodoContext } from "../context/TodoContext";
-import { Todo } from "../types/TodoType";
 import TodoItem from "./TodoItem";
+import useFilteredTodo from "../hook/useFIlteredTodo";
 
 function TodoItemList() {
-  const { todos, filter } = useTodoContext();
-
-  const getFilteredTodos = (): Todo[] => {
-    switch (filter) {
-      case "ALL":
-        return todos;
-      case "DONE":
-        return todos.filter((todo) => todo.done);
-      case "YET":
-        return todos.filter((todo) => !todo.done);
-      default:
-        return todos;
-    }
-  };
+  const filteredTodos = useFilteredTodo();
 
   return (
     <ul>
-      {getFilteredTodos().map((todo) => (
+      {filteredTodos.map((todo) => (
         <TodoItem key={todo.id} todo={todo} />
       ))}
     </ul>

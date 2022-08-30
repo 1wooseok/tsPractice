@@ -50,6 +50,7 @@ export function TodoReducer(
         ),
       };
     case "SET_FILTER":
+      console.log("before Filter Change");
       return {
         ...state,
         filter: action.payload,

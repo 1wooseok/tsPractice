@@ -6,7 +6,7 @@ function TodoFilter() {
   const dispatch = useTodoDispatch();
 
   const handleFilter = (filter: Filter) => {
-    dispatch({ type: "SET_FITER", payload: filter });
+    dispatch({ type: "SET_FILTER", payload: filter });
   };
 
   return (

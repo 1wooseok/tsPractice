@@ -7,3 +7,14 @@ ul,
 li {
   list-style: none;
 }
+
+span {
+  display: inline-block;
+  margin: 5px 0px;
+  margin-left: 10px;
+  width: 140px;
+}
+
+button {
+  margin: 5px;
+}
