@@ -1,8 +1,9 @@
 import { useTodoContext } from "../context/TodoContext";
 
 export default function useFilteredTodo() {
-  const { todos, filter } = useTodoContext();
-
+  const { data } = useTodoContext();
+  const { todos, filter } = data;
+  console.log(todos, filter);
   switch (filter) {
     case "ALL":
       return todos;

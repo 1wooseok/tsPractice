@@ -15,3 +15,9 @@ export interface TodoStateInterface {
   todos: Todo[] | null;
   filter: Filter | null;
 }
+
+export interface TodoReducerStateInterface {
+  loading: boolean;
+  data: { todos: Todo[]; filter: Filter };
+  error: null | any;
+}

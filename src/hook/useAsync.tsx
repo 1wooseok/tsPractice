@@ -1,16 +1,18 @@
 import { useTodoDispatch } from "../context/TodoContext";
 
+interface asyncAction {
+  type: string;
+  payload: () => Promise<any> | null;
+}
+
 export default function useAsyncDispatch() {
   const dispatch = useTodoDispatch();
 
-  const asyncDispatch = async (
-    type: string,
-    callback: () => Promise<any>
-  ): Promise<any> => {
+  const asyncDispatch = async (action: asyncAction): Promise<any> => {
     dispatch({ type: "LOADING" });
     try {
-      const payload = await callback();
-      dispatch({ type, payload });
+      const data = await action.payload();
+      dispatch({ type: action.type, payload: data });
     } catch (err) {
       dispatch({ type: "ERROR", payload: err });
     }

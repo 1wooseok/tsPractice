@@ -4,7 +4,7 @@ import useFilteredTodo from "../hook/useFIlteredTodo";
 
 function TodoItemList() {
   const filteredTodos = useFilteredTodo();
-
+  console.log(filteredTodos);
   if (!filteredTodos) return <h1>Loading...</h1>;
 
   return (

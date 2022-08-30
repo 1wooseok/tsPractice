@@ -1,25 +1,20 @@
 // 로딩처리 하기
-import { Todo, Filter, TodoStateInterface } from "../types/TodoType";
+import { Todo, Filter, TodoReducerStateInterface } from "../types/TodoType";
 
-export const initialState: TodoStateInterface = {
-  todos: [],
-  filter: Filter.ALL,
+export const initialState: TodoReducerStateInterface = {
+  loading: true,
+  data: { todos: [], filter: Filter.ALL },
+  error: null,
 };
 
 type ACTIONS =
   | { type: "LOADING" }
   | { type: "ERROR"; payload: any }
-  | { type: "ADD_TODO"; payload: Todo }
+  | { type: "ADD_TODO"; payload: any }
   | { type: "DELETE_TODO"; payload: string }
   | { type: "UPDATE_TODO"; payload: { id: string; text: string } }
   | { type: "TOGGLE_TODO"; payload: string }
   | { type: "SET_FILTER"; payload: Filter };
-
-interface TodoReducerStateInterface {
-  loading: boolean;
-  data: null | { todos: Todo[]; filter: Filter };
-  error: null | any;
-}
 
 const loading = (data: any) => {
   return {
@@ -37,10 +32,10 @@ const success = (data: any) => {
   };
 };
 
-const error = (err: any) => {
+const error = (err: any, data: any) => {
   return {
     loading: true,
-    data: null,
+    data,
     error: err,
   };
 };
@@ -50,6 +45,15 @@ export function TodoReducer(
   action: ACTIONS
 ): TodoReducerStateInterface {
   switch (action.type) {
+    case "LOADING":
+      return loading(state.data);
+    case "ERROR":
+      return error(action.payload, state.data);
+    case "ADD_TODO":
+      return success({
+        todos: [...state?.data?.todos, action.payload],
+        filter: state.data.filter,
+      });
     default:
       return state;
   }
