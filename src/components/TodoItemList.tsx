@@ -7,7 +7,7 @@ function TodoItemList() {
 
   return (
     <ul>
-      {filteredTodos.map((todo) => (
+      {filteredTodos?.map((todo) => (
         <TodoItem key={todo.id} todo={todo} />
       ))}
     </ul>

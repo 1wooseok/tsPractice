@@ -1,4 +1,6 @@
 import { Todo, Filter, TodoStateInterface } from "../types/TodoType";
+import { db } from "../FIREBASE";
+import { addDoc, collection } from "firebase/firestore";
 
 export const initialState: TodoStateInterface = {
   todos: [],
@@ -7,23 +9,35 @@ export const initialState: TodoStateInterface = {
 
 type ACTIONS =
   | { type: "ADD_TODO"; payload: string }
-  | { type: "DELETE_TODO"; payload: number }
-  | { type: "UPDATE_TODO"; payload: { id: number; text: string } }
-  | { type: "TOGGLE_TODO"; payload: number }
+  | { type: "DELETE_TODO"; payload: string }
+  | { type: "UPDATE_TODO"; payload: { id: string; text: string } }
+  | { type: "TOGGLE_TODO"; payload: string }
   | { type: "SET_FILTER"; payload: Filter };
 
-export function TodoReducer(
+export async function TodoReducer(
   state: typeof initialState,
   action: ACTIONS
-): TodoStateInterface {
+): Promise<TodoStateInterface> {
   switch (action.type) {
     case "ADD_TODO":
+      let test = false;
+      const docRef = await addDoc(collection(db, "todoItem"), {
+        todoItemContent: {
+          text: action.payload,
+          done: false,
+          date: new Date().toDateString(),
+        },
+        isFinished: false,
+      });
+
       const todoItem: Todo = {
-        id: createId(),
+        id: docRef.id,
         text: action.payload,
         done: false,
         date: new Date().toDateString(),
       };
+
+      console.log({ todoItem });
       return {
         ...state,
         todos: [...state.todos, todoItem],
@@ -58,9 +72,4 @@ export function TodoReducer(
     default:
       return state;
   }
-}
-
-let cnt = 0;
-function createId() {
-  return ++cnt;
 }
