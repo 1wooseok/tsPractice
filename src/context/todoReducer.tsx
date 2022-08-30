@@ -5,16 +5,10 @@ export const initialState: TodoStateInterface = {
   filter: Filter.ALL,
 };
 
-export enum ACTIONTYPE {
-  ADD_TODO = "ADD_TODO",
-  DELETE_TODO = "DELETE_TODO",
-  YET = "YET",
-}
-
 type ACTIONS =
   | { type: "ADD_TODO"; payload: string }
   | { type: "DELETE_TODO"; payload: number }
-  | { type: "UPDATE_TODO"; payload: { id: number; text: null | string } }
+  | { type: "UPDATE_TODO"; payload: { id: number; text: string } }
   | { type: "TOGGLE_TODO"; payload: number }
   | { type: "SET_FILTER"; payload: Filter };
 

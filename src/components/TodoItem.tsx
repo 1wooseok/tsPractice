@@ -18,7 +18,7 @@ function TodoItem({ todo }: TodoItemProps) {
     dispatch({ type: "DELETE_TODO", payload: id });
   };
 
-  const updateTodo = (text: string | null) => {
+  const updateTodo = (text: string) => {
     dispatch({ type: "UPDATE_TODO", payload: { id, text } });
   };
 
@@ -36,7 +36,7 @@ function TodoItem({ todo }: TodoItemProps) {
     }
 
     timer.current = setTimeout(() => {
-      updateTodo(e.target.textContent);
+      updateTodo(e.target.textContent || "");
     }, 200);
   };
 
