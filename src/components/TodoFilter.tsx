@@ -1,5 +1,5 @@
 import React from "react";
-import { Filter } from "../App";
+import { Filter } from "../context/TodoContext";
 
 interface FilterProps {
   setFilter: (newFilter: Filter) => void;

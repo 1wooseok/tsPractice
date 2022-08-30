@@ -2,19 +2,7 @@ import React, { useState, useCallback } from "react";
 import TodoItemList from "./components/TodoItemList";
 import TodoInputField from "./components/TodoInputField";
 import TodoFilter from "./components/TodoFilter";
-
-export interface Todo {
-  id: number;
-  text: string;
-  done: boolean;
-  date: string;
-}
-
-export enum Filter {
-  ALL = "ALL",
-  DONE = "DONE",
-  YET = "YET",
-}
+import { Todo, Filter } from "./context/TodoContext";
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
