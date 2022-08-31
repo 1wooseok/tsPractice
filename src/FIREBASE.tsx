@@ -8,6 +8,8 @@ import {
   addDoc,
   setDoc,
   deleteDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { Todo } from "./types/TodoType";
 
@@ -26,9 +28,17 @@ const analytics = getAnalytics(app);
 
 export const db = getFirestore(app);
 
-export const getTodosFromFirestore = async (): Promise<any> => {
+export const getTodosFromFirestore = async (
+  currentUser: string
+): Promise<any> => {
+  console.log(currentUser);
+  const q = query(
+    collection(db, "todoItem"),
+    where("userId", "==", currentUser)
+  );
+
   const firestoreTodoItemList: Todo[] = [];
-  const querySnapshot = await getDocs(collection(db, "todoItem"));
+  const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     firestoreTodoItemList.push({
       id: doc.id,
@@ -40,11 +50,15 @@ export const getTodosFromFirestore = async (): Promise<any> => {
   return firestoreTodoItemList;
 };
 
-export const addTodoFromFireStore = async (input: string): Promise<Todo> => {
+export const addTodoFromFireStore = async (
+  input: string,
+  userId: string
+): Promise<Todo> => {
   const docRef = await addDoc(collection(db, "todoItem"), {
     text: input,
     date: new Date().toDateString(),
     done: false,
+    userId: userId,
   });
 
   return {

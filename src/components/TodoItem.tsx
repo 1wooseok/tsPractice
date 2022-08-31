@@ -2,7 +2,8 @@ import { useCallback } from "react";
 import { removeTodoFromFirestore, toggleTodoFromFirestore } from "../FIREBASE";
 import useAsyncDispatch from "../hook/useAsync";
 import { Todo } from "../types/TodoType";
-import { Button } from "@mui/material";
+import { Button, Checkbox } from "@mui/material";
+
 import "../styles/todoStyle.css";
 
 interface TodoItemProps {
@@ -30,7 +31,7 @@ function TodoItem({ todo }: TodoItemProps) {
 
   return (
     <li className={todo.done ? "done" : ""}>
-      <input type="checkbox" checked={todo.done} onChange={toggleTodo} />
+      <Checkbox disableRipple checked={todo.done} onChange={toggleTodo} />
       <span>{todo.text}</span>
       <span>( {todo.date} )</span>
       <Button onClick={removeTodo}>DEL</Button>

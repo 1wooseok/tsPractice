@@ -1,7 +1,7 @@
 import React from "react";
 import { useTodoDispatch } from "../context/TodoContext";
 import { Filter } from "../types/TodoType";
-import { Button } from "@mui/material";
+import { Button, Box, Stack } from "@mui/material";
 
 function TodoFilter() {
   const dispatch = useTodoDispatch();
@@ -11,11 +11,13 @@ function TodoFilter() {
   };
 
   return (
-    <div>
-      <Button onClick={() => handleFilter(Filter.ALL)}>{Filter.ALL}</Button>
-      <Button onClick={() => handleFilter(Filter.DONE)}>{Filter.DONE}</Button>
-      <Button onClick={() => handleFilter(Filter.YET)}>{Filter.YET}</Button>
-    </div>
+    <Box sx={{ margin: "auto" }}>
+      <Stack direction="row" spacing={2} justifyContent="center">
+        <Button onClick={() => handleFilter(Filter.ALL)}>{Filter.ALL}</Button>
+        <Button onClick={() => handleFilter(Filter.DONE)}>{Filter.DONE}</Button>
+        <Button onClick={() => handleFilter(Filter.YET)}>{Filter.YET}</Button>
+      </Stack>
+    </Box>
   );
 }
 

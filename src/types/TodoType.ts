@@ -3,7 +3,6 @@ export interface Todo {
   text: string;
   done: boolean;
   date: string;
-  userId: string;
 }
 
 export enum Filter {
@@ -18,7 +17,7 @@ export interface TodoStateInterface {
 }
 
 export interface TodoReducerStateInterface {
-  loading: { status: boolean, data: { type: string, payload?: any } };
+  loading: { status: boolean, data?: { type: string, payload?: any } };
   data: TodoStateInterface;
   error: null | any;
 }

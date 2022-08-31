@@ -10,7 +10,12 @@ function TodoItemList() {
 
   if (!loading.status) {
     if (error) return <h3>An Error Occuered</h3>;
-    if (todos && todos.length === 0) return <h3>* No TodoItem</h3>;
+    if (todos && todos.length === 0)
+      return (
+        <>
+          <h3>* No TodoItem</h3>
+        </>
+      );
   }
 
   let template;
@@ -23,7 +28,10 @@ function TodoItemList() {
         template = (
           <>
             <TodoList todos={todos} />
-            <CircularProgress />
+            <CircularProgress
+              size="1.5rem"
+              sx={{ position: "absolute", left: "40%" }}
+            />
           </>
         );
         break;
@@ -32,7 +40,11 @@ function TodoItemList() {
           <>
             {todos.map((todo, idx) =>
               todo.id === loading.data.payload ? (
-                <CircularProgress key={idx} />
+                <CircularProgress
+                  key={idx}
+                  size="1.5rem"
+                  sx={{ position: "absolute", left: "40%" }}
+                />
               ) : (
                 <TodoItem key={idx} todo={todo} />
               )

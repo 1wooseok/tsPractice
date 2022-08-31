@@ -6,20 +6,18 @@ import {
   Typography,
   Button,
 } from "@mui/material";
-import { useLogin, useLogout } from "../utils/login";
+import { useAuth, useAuthAction } from "../context/AuthContext";
 
-interface AppbarProps {
-  currentUser: string | null;
-}
+export default function TodoListAppBar() {
+  const currentUser = useAuth();
+  const actions = useAuthAction();
 
-export default function TodoListAppBar({ currentUser }: AppbarProps) {
-  console.log(currentUser);
   const button = currentUser ? (
-    <Button color="inherit" onClick={useLogout}>
+    <Button color="inherit" onClick={actions.logout}>
       Logout
     </Button>
   ) : (
-    <Button color="inherit" onClick={useLogin}>
+    <Button color="inherit" onClick={actions.login}>
       Login
     </Button>
   );

@@ -34,7 +34,7 @@ const success = (data: any) => {
 
 const error = (err: any, data: any) => {
   return {
-    loading: { status: true },
+    loading: { status: false },
     data,
     error: err,
   };
