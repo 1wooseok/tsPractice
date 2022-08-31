@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
-import { addDoc, collection } from "firebase/firestore";
 import { addTodoFromFireStore } from "../FIREBASE";
-import { Todo } from "../types/TodoType";
 import useAsyncDispatch from "../hook/useAsync";
 
 function TodoInputField() {

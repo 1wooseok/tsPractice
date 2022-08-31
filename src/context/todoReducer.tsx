@@ -1,31 +1,24 @@
 // 로딩처리 하기
-import { Todo, Filter } from "../types/TodoType";
-
-interface TodoReducerStateInterface {
-  loading: boolean;
-  data: { todos: Todo[]; filter: Filter };
-  error: null | any;
-}
+import { Todo, Filter, TodoReducerStateInterface } from "../types/TodoType";
 
 export const initialState: TodoReducerStateInterface = {
-  loading: false,
+  loading: { status: true, data: { type: "LOAD_TODO" } },
   data: { todos: [], filter: Filter.ALL },
   error: null,
 };
 
 type ACTIONS =
-  | { type: "LOADING" }
+  | { type: "LOADING"; data: { type?: string; data?: any } }
   | { type: "ERROR"; payload: any }
   | { type: "LOAD_TODO"; payload: Todo[] }
   | { type: "ADD_TODO"; payload: Todo }
   | { type: "REMOVE_TODO"; payload: string }
   | { type: "TOGGLE_TODO"; payload: string }
   | { type: "SET_FILTER"; payload: Filter };
-// | { type: "UPDATE_TODO"; payload: { id: string; text: string } }
 
-const loading = (data: any) => {
+const loading = (data: any, prevData?: any) => {
   return {
-    loading: true,
+    loading: { status: true, data: prevData },
     data: data,
     error: null,
   };
@@ -33,7 +26,7 @@ const loading = (data: any) => {
 
 const success = (data: any) => {
   return {
-    loading: false,
+    loading: { status: false },
     data: data,
     error: null,
   };
@@ -41,7 +34,7 @@ const success = (data: any) => {
 
 const error = (err: any, data: any) => {
   return {
-    loading: true,
+    loading: { status: true },
     data,
     error: err,
   };
@@ -53,31 +46,30 @@ export function TodoReducer(
 ): TodoReducerStateInterface {
   switch (action.type) {
     case "LOADING":
-      return loading(state.data);
+      return loading({ ...state.data }, action.data);
     case "ERROR":
-      return error(action.payload, state.data);
+      return error(action.payload, { ...state.data });
     case "LOAD_TODO":
-      console.log("씨발", action.type);
       return success({
+        ...state.data,
         todos: action.payload,
-        filter: state.data.filter,
       });
     case "ADD_TODO":
       return success({
+        ...state.data,
         todos: [...state.data.todos, action.payload],
-        filter: state.data.filter,
       });
     case "REMOVE_TODO":
       return success({
+        ...state.data,
         todos: state.data.todos.filter((todo) => todo.id !== action.payload),
-        filter: state.data.filter,
       });
     case "TOGGLE_TODO":
       return success({
+        ...state.data,
         todos: state.data.todos.map((todo) =>
           todo.id === action.payload ? { ...todo, done: !todo.done } : todo
         ),
-        filter: state.data.filter,
       });
     case "SET_FILTER":
       return success({

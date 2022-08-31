@@ -2,7 +2,8 @@ import React, { ReactNode, useContext, useReducer } from "react";
 import { TodoReducer, initialState } from "./todoReducer";
 import { TodoReducerStateInterface } from "../types/TodoType";
 
-const TodoContext = React.createContext<TodoReducerStateInterface | null>(null);
+const TodoContext =
+  React.createContext<TodoReducerStateInterface>(initialState);
 // hack
 const TodoDispatch = React.createContext<any>(null);
 
