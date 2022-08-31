@@ -79,6 +79,11 @@ export function TodoReducer(
         ),
         filter: state.data.filter,
       });
+    case "SET_FILTER":
+      return success({
+        ...state.data,
+        filter: action.payload,
+      });
     default:
       return state;
   }

@@ -1,6 +1,4 @@
-// import React, { useState, useRef } from "react";
 import { removeTodoFromFirestore, toggleTodoFromFirestore } from "../FIREBASE";
-// import { useTodoDispatch } from "../context/TodoContext";
 import useAsyncDispatch from "../hook/useAsync";
 import { Todo } from "../types/TodoType";
 import { Button } from "@mui/material";
@@ -11,9 +9,7 @@ interface TodoItemProps {
 }
 
 function TodoItem({ todo }: TodoItemProps) {
-  // const timer = useRef<number | null>(null);
   const asyncDispatch = useAsyncDispatch();
-  // const dispatch = useTodoDispatch();
 
   const removeTodo = () => {
     asyncDispatch({
@@ -28,24 +24,6 @@ function TodoItem({ todo }: TodoItemProps) {
       payload: () => toggleTodoFromFirestore(todo.id, todo.done),
     });
   };
-
-  // const updateTodo = (text: string) => {
-  //   dispatch({ type: "UPDATE_TODO", payload: { id: todo.id, text } });
-  // };
-
-  // const handleChange = (e: React.ChangeEvent<HTMLSpanElement>) => {
-  //   if (e.target.textContent === todo.text) {
-  //     return;
-  //   }
-  //   if (timer.current) {
-  //     clearTimeout(timer.current);
-  //   }
-  //   timer.current = setTimeout(() => {
-  //     updateTodo(e.target.textContent || "");
-  //   }, 200);
-  // };
-
-  // const isDone = todo.done ? { textDecoration: "line-through !important" } : {};
 
   return (
     <li className={todo.done ? "done" : ""}>
