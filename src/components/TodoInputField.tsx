@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
-import { useTodoDispatch } from "../context/TodoContext";
 import { addDoc, collection } from "firebase/firestore";
-import { db } from "../FIREBASE";
+import { addTodoFromFireStore } from "../FIREBASE";
 import { Todo } from "../types/TodoType";
 import useAsyncDispatch from "../hook/useAsync";
 
 function TodoInputField() {
-  // const dispatch = useTodoDispatch();
   const asyncDispatch = useAsyncDispatch();
   const [input, setInput] = useState<string>("");
 
@@ -15,53 +13,15 @@ function TodoInputField() {
     setInput(e.target.value);
   };
 
-  // const addTodo = async (): Promise<void> => {
-  //   if (!input) {
-  //     return;
-  //   }
-  //   dispatch({ type: "LOADING" });
-  //   try {
-  //     const docRef = await addDoc(collection(db, "todoItem"), {
-  //       todoItemContent: {
-  //         text: input,
-  //         date: new Date().toDateString(),
-  //       },
-  //       done: false,
-  //     });
-
-  //     const newTodoItem: Todo = {
-  //       id: docRef.id,
-  //       text: input,
-  //       done: false,
-  //       date: new Date().toDateString(),
-  //     };
-
-  //     dispatch({ type: "ADD_TODO", payload: newTodoItem });
-  //     setInput("");
-  //   } catch (err) {
-  //     dispatch({ type: "ERROR", payload: err });
-  //   }
-  // };
-  const test = async (): Promise<Todo> => {
+  const addTodo = (): void => {
+    if (!input || input.length === 0) {
+      return;
+    }
     setInput("");
-    const docRef = await addDoc(collection(db, "todoItem"), {
-      todoItemContent: {
-        text: input,
-        date: new Date().toDateString(),
-      },
-      done: false,
+    asyncDispatch({
+      type: "ADD_TODO",
+      payload: () => addTodoFromFireStore(input),
     });
-
-    return {
-      id: docRef.id,
-      text: input,
-      done: false,
-      date: new Date().toDateString(),
-    };
-  };
-
-  const addTodo = () => {
-    asyncDispatch({ type: "ADD_TODO", payload: test });
   };
 
   return (

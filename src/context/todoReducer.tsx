@@ -1,5 +1,5 @@
 // 로딩처리 하기
-import { Todo, Filter, TodoStateInterface } from "../types/TodoType";
+import { Todo, Filter } from "../types/TodoType";
 
 interface TodoReducerStateInterface {
   loading: boolean;
@@ -16,11 +16,12 @@ export const initialState: TodoReducerStateInterface = {
 type ACTIONS =
   | { type: "LOADING" }
   | { type: "ERROR"; payload: any }
-  | { type: "ADD_TODO"; payload: any }
-  | { type: "DELETE_TODO"; payload: string }
-  | { type: "UPDATE_TODO"; payload: { id: string; text: string } }
+  | { type: "LOAD_TODO"; payload: Todo[] }
+  | { type: "ADD_TODO"; payload: Todo }
+  | { type: "REMOVE_TODO"; payload: string }
   | { type: "TOGGLE_TODO"; payload: string }
   | { type: "SET_FILTER"; payload: Filter };
+// | { type: "UPDATE_TODO"; payload: { id: string; text: string } }
 
 const loading = (data: any) => {
   return {
@@ -55,9 +56,27 @@ export function TodoReducer(
       return loading(state.data);
     case "ERROR":
       return error(action.payload, state.data);
+    case "LOAD_TODO":
+      console.log("씨발", action.type);
+      return success({
+        todos: action.payload,
+        filter: state.data.filter,
+      });
     case "ADD_TODO":
       return success({
-        todos: [...state?.data?.todos, action.payload],
+        todos: [...state.data.todos, action.payload],
+        filter: state.data.filter,
+      });
+    case "REMOVE_TODO":
+      return success({
+        todos: state.data.todos.filter((todo) => todo.id !== action.payload),
+        filter: state.data.filter,
+      });
+    case "TOGGLE_TODO":
+      return success({
+        todos: state.data.todos.map((todo) =>
+          todo.id === action.payload ? { ...todo, done: !todo.done } : todo
+        ),
         filter: state.data.filter,
       });
     default:

@@ -3,7 +3,6 @@ import { TodoReducer, initialState } from "./todoReducer";
 import { TodoReducerStateInterface } from "../types/TodoType";
 
 const TodoContext = React.createContext<TodoReducerStateInterface | null>(null);
-
 // hack
 const TodoDispatch = React.createContext<any>(null);
 
@@ -22,11 +21,11 @@ export const TodoContextProvider = ({ children }: TodoContextProps) => {
 
 export const useTodoContext = () => {
   const state = useContext(TodoContext);
-  console.log(state);
   return state;
 };
 
 export const useTodoDispatch = () => {
   const dispatch = useContext(TodoDispatch);
+
   return dispatch;
 };

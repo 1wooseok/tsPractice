@@ -14,6 +14,7 @@ export default function useAsyncDispatch() {
       const data = await action.payload();
       dispatch({ type: action.type, payload: data });
     } catch (err) {
+      console.error("firestore error ", err);
       dispatch({ type: "ERROR", payload: err });
     }
   };
