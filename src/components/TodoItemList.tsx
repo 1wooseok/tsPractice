@@ -20,10 +20,7 @@ function TodoItemList() {
 
   let template;
   if (loading.status) {
-    switch (
-      loading.data &&
-      loading.data.type // hack
-    ) {
+    switch (loading.data && loading.data.type) {
       case "LOAD_TODO":
         template = <CircularProgress />;
         break;
