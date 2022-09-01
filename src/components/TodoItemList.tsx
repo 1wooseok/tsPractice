@@ -20,7 +20,10 @@ function TodoItemList() {
 
   let template;
   if (loading.status) {
-    switch (loading.data.type) {
+    switch (
+      loading.data &&
+      loading.data.type // hack
+    ) {
       case "LOAD_TODO":
         template = <CircularProgress />;
         break;
@@ -39,7 +42,7 @@ function TodoItemList() {
         template = (
           <>
             {todos.map((todo, idx) =>
-              todo.id === loading.data.payload ? (
+              loading.data && todo.id === loading.data.payload ? (
                 <CircularProgress
                   key={idx}
                   size="1.5rem"
@@ -56,7 +59,7 @@ function TodoItemList() {
         template = (
           <>
             {todos.map((todo, idx) =>
-              todo.id === loading.data.payload ? (
+              loading.data && todo.id === loading.data.payload ? (
                 <li key={idx} className={todo.done ? "done" : ""}>
                   <CircularProgress size="0.8rem" sx={{ margin: "3px" }} />
                   <span>{todo.text}</span>

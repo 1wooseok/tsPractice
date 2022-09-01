@@ -1,5 +1,5 @@
-import React, { ReactNode, useContext, useReducer } from "react";
-import { TodoReducer, initialState } from "./todoReducer";
+import React, { useContext, useReducer } from "react";
+import { TodoReducer, initialState } from "./TodoReducer";
 import { TodoReducerStateInterface } from "../types/TodoType";
 import { ContextProps } from "../types/ContextType";
 

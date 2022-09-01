@@ -11,7 +11,7 @@ export function useLogout() {
   signOut(auth);
 }
 
-export function useAuthChanged(setter) {
+export function useAuthChanged(setter: (userId: string | null) => void) {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setter(user.uid);
